@@ -1,0 +1,25 @@
+input[type="file"].form-control::file-selector-button {
+  display: none;
+}
+
+input[type="file"].form-control::before {
+  content: attr(value) "Browse";
+  background-color: #e9ecef;
+  border: 0 solid;
+  border-color: inherit;
+  border-inline-end-width: 1px;
+  border-radius: 0;
+  color: #212529;
+  padding: 0.5rem 1rem;
+  margin: -0.5rem -1rem;
+  margin-inline-end: 1rem;
+  pointer-events: none;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input[type="file"].form-control.form-control-lg::before {
+  padding: 0.75rem 1rem;
+  margin: -0.75rem -1rem;
+  margin-inline-end: 1rem;
+}
