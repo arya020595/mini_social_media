@@ -1,17 +1,17 @@
-import { Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { Outlet } from "react-router";
 
 function AuthLayout() {
   return (
-    <Container
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100vh",
-      }}>
-      <Row className="text-center">
-        <Outlet />
+    <Container>
+      <Row
+        xs={1}
+        md={2}
+        lg={3}
+        className="text-center justify-content-center align-items-center vh-100">
+        <Col>
+          <Outlet />
+        </Col>
       </Row>
     </Container>
   );

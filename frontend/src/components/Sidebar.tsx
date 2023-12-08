@@ -6,7 +6,7 @@ function Sidebar() {
   return (
     <>
       <Nav className="nav flex-column gap-3 text-center">
-        <NavLink to="/" className="nav-link active text-dark">
+        <NavLink to="/" className="nav-link text-dark">
           <FontAwesomeIcon icon={["fas", "house"]} />
         </NavLink>
         <NavLink to="/user" className="nav-link text-dark">
