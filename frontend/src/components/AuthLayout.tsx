@@ -8,7 +8,7 @@ function AuthLayout() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        height: "100vh",
+        minHeight: "100vh",
       }}>
       <Row className="text-center">
         <Outlet />

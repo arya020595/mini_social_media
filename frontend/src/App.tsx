@@ -12,8 +12,6 @@ import Register from "./pages/Register";
 import User from "./pages/User";
 
 function App() {
-  const isAuthenticated = false; // Replace with your actual authentication logic
-
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/">

@@ -1,3 +1,4 @@
+import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 function NotFound() {
@@ -6,9 +7,9 @@ function NotFound() {
       className="d-flex align-items-center justify-content-center"
       style={{ height: "100vh" }}>
       <div className="text-center">
-        <h1>Page is not found</h1>
+        <h1 className="mb-4">Page is not found</h1>
         <Link to="/">
-          <button>Back to Homepage</button>
+          <Button variant="outline-secondary">Back to Homepage</Button>
         </Link>
       </div>
     </div>
