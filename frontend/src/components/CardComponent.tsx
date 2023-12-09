@@ -18,6 +18,7 @@ function CardComponent({ data }: any) {
             ) : (
               <FontAwesomeIcon icon={["far", "heart"]} />
             )}
+            <span className="ms-2">1</span>
           </Card.Title>
           <Card.Title>{data}</Card.Title>
           <Card.Text>
