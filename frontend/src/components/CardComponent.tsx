@@ -1,11 +1,24 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card, Col } from "react-bootstrap";
 
 function CardComponent({ data }: any) {
+  const isActive = false;
+
   return (
     <Col>
       <Card>
         <Card.Img variant="top" src="https://placehold.co/150" />
         <Card.Body>
+          <Card.Title>
+            {isActive ? (
+              <FontAwesomeIcon
+                className="text-danger"
+                icon={["fas", "heart"]}
+              />
+            ) : (
+              <FontAwesomeIcon icon={["far", "heart"]} />
+            )}
+          </Card.Title>
           <Card.Title>{data}</Card.Title>
           <Card.Text>
             Some quick example text to build on the card title and make up the

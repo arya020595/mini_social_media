@@ -12,13 +12,13 @@ function Post() {
     "Item 3",
   ];
   return (
-    <div>
+    <>
       <Row xs={1} md={2} lg={4} className="g-3">
         {items.map((item, index) => (
           <CardComponent key={index} data={item} />
         ))}
       </Row>
-    </div>
+    </>
   );
 }
 
