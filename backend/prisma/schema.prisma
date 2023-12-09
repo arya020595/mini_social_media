@@ -11,7 +11,7 @@ model User {
   id        Int       @default(autoincrement()) @id
   email     String    @unique
   username  String    @unique
-  name      String?
+  name      String
   posts     Post[]
   likes     Like[]
   createdAt DateTime  @default(now())
@@ -24,8 +24,8 @@ model Post {
   tag       String
   image     String
   published Boolean?  @default(true)
-  author    User?     @relation(fields: [authorId], references: [id])
-  authorId  Int?
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  Int
   likes     Like[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -33,10 +33,10 @@ model Post {
 
 model Like {
   id        Int       @default(autoincrement()) @id
-  author    User?     @relation(fields: [authorId], references: [id])
-  authorId  Int?
-  post      Post?     @relation(fields: [postId], references: [id])
-  postId    Int?
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  Int
+  post      Post      @relation(fields: [postId], references: [id])
+  postId    Int
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
