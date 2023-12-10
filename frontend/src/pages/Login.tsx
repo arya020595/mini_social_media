@@ -1,7 +1,13 @@
 import { Button, Card, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    navigate("/");
+  };
+
   return (
     <>
       <Card border="Secondary">
@@ -16,7 +22,9 @@ function Login() {
             </Form.Group>
           </Form>
           <div className="d-grid gap-3">
-            <Button variant="secondary">LOGIN</Button>
+            <Button variant="secondary" onClick={handleSubmit}>
+              LOGIN
+            </Button>
             <Link
               className="text-secondary text-decoration-none"
               to="/register">

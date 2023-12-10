@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../assets/Register.css";
 
 function Register() {
+  const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleSubmit = () => {
+    navigate("/");
+  };
 
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
@@ -60,7 +65,9 @@ function Register() {
           </Form.Group>
         </Form>
         <div className="d-grid gap-3">
-          <Button variant="secondary">REGISTER</Button>
+          <Button variant="secondary" onClick={handleSubmit}>
+            REGISTER
+          </Button>
           <Link className="text-secondary text-decoration-none" to="/login">
             Login
           </Link>
