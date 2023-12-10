@@ -1,20 +1,18 @@
 import { Row } from "react-bootstrap";
+import { useLoaderData } from "react-router";
+import { getPosts } from "../api";
 import CardComponent from "../components/CardComponent";
 
+export async function loader() {
+  return getPosts();
+}
+
 function Post() {
-  const items = [
-    "Item 1",
-    "Item 2",
-    "Item 3",
-    "Item 3",
-    "Item 3",
-    "Item 3",
-    "Item 3",
-  ];
+  const datas: any = useLoaderData();
   return (
     <>
       <Row xs={1} md={2} lg={4} className="g-3">
-        {items.map((item, index) => (
+        {datas?.data.map((item: any, index: number) => (
           <CardComponent key={index} data={item} />
         ))}
       </Row>

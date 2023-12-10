@@ -25,7 +25,12 @@ function App() {
           />
           <Route path="user" element={<User />} />
           <Route path="change-password" element={<ChangePassword />} />
-          <Route path="post" element={<Post />} />
+          <Route
+            path="post"
+            element={<Post />}
+            loader={homesloader}
+            errorElement={<Error />}
+          />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="login" element={<Login />} />

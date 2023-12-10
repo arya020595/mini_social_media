@@ -11,8 +11,6 @@ export async function loader() {
 function Home() {
   const datas: any = useLoaderData();
 
-  console.log(datas);
-
   return (
     <>
       <Row xs={1} md={2} lg={4} className="g-3">
