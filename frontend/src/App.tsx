@@ -3,9 +3,10 @@ import { createBrowserRouter } from "react-router-dom";
 // import "./App.css";
 import NotFound from "./NotFound";
 import AuthLayout from "./components/AuthLayout";
+import Error from "./components/Error";
 import Layout from "./components/Layout";
 import ChangePassword from "./pages/ChangePassword";
-import Home from "./pages/Home";
+import Home, { loader as homesloader } from "./pages/Home";
 import Login from "./pages/Login";
 import Post from "./pages/Post";
 import Register from "./pages/Register";
@@ -16,7 +17,12 @@ function App() {
     createRoutesFromElements(
       <Route path="/">
         <Route element={<Layout />}>
-          <Route index element={<Home />} />
+          <Route
+            index
+            element={<Home />}
+            loader={homesloader}
+            errorElement={<Error />}
+          />
           <Route path="user" element={<User />} />
           <Route path="change-password" element={<ChangePassword />} />
           <Route path="post" element={<Post />} />

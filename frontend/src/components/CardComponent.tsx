@@ -7,7 +7,7 @@ function CardComponent({ data }: any) {
   return (
     <Col>
       <Card>
-        <Card.Img variant="top" src="https://placehold.co/150" />
+        <Card.Img variant="top" src={data.image} />
         <Card.Body>
           <Card.Title>
             {isActive ? (
@@ -18,18 +18,11 @@ function CardComponent({ data }: any) {
             ) : (
               <FontAwesomeIcon icon={["far", "heart"]} />
             )}
-            <span className="ms-2">1</span>
+            <span className="ms-2">{data._count.likes}</span>
           </Card.Title>
-          <Card.Title>{data}</Card.Title>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
+          <Card.Title>{data.caption}</Card.Title>
           <Card.Link className="text-decoration-none text-secondary" href="#">
-            Card Link
-          </Card.Link>
-          <Card.Link className="text-decoration-none text-secondary" href="#">
-            Another Link
+            {data.tag}
           </Card.Link>
         </Card.Body>
       </Card>

@@ -1,26 +1,18 @@
-export async function authLogin(username: string, password: string) {
-  const baseURL = "https://dummyjson.com";
-  const url = `${baseURL}/auth/login`;
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      // username: "kminchelle",
-      // password: "0lelplR",
-      username: username,
-      password: password,
-    }),
-  });
+export async function getPosts(id: any = null) {
+  try {
+    const baseURL = import.meta.env.VITE_BASE_URL;
+    const url = id ? `${baseURL}/posts/${id}` : `${baseURL}/posts`;
 
-  const data = await response.json();
+    const response = await fetch(url); // Use the constructed URL here
 
-  if (!response.ok) {
-    throw {
-      message: data.message,
-      statusText: response.statusText, // Menampilkan teks deskripsi status HTTP (misal: OK, Not Found, dll.)
-      status: response.status, // Menampilkan kode status HTTP (misal: 200, 404, dll.)
-    };
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    throw error; // Rethrow the error for the calling code to handle
   }
-
-  return data;
 }
