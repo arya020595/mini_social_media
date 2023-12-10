@@ -12,8 +12,10 @@ export class PostsService {
     });
   }
 
-  findAll() {
+  findAll({ skip = 0, take = 10 }) {
     return this.prisma.post.findMany({
+      skip,
+      take,
       include: {
         author: true,
         _count: {

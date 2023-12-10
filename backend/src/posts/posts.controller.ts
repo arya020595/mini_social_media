@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PostsService } from './posts.service';
@@ -20,8 +21,8 @@ export class PostsController {
   }
 
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  findAll(@Query('skip') skip: number = 0, @Query('take') take: number = 10) {
+    return this.postsService.findAll({ skip, take });
   }
 
   @Get('user/:id')
