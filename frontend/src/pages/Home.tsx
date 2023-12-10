@@ -16,7 +16,7 @@ function Home() {
   return (
     <>
       <Row xs={1} md={2} lg={4} className="g-3">
-        {datas.map((item: any, index: number) => (
+        {datas?.data.map((item: any, index: number) => (
           <CardComponent key={index} data={item} />
         ))}
       </Row>

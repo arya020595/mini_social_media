@@ -12,17 +12,28 @@ export class PostsService {
     });
   }
 
-  findAll({ skip = 0, take = 10 }) {
-    return this.prisma.post.findMany({
-      skip,
-      take,
-      include: {
-        author: true,
-        _count: {
-          select: { likes: true },
+  async findAll({ skip = 0, take = 10 }) {
+    const [posts, total] = await Promise.all([
+      this.prisma.post.findMany({
+        skip,
+        take,
+        include: {
+          author: true,
+          _count: {
+            select: { likes: true },
+          },
         },
-      },
-    });
+      }),
+      this.prisma.post.count(), // Fetch total count of posts
+    ]);
+
+    const totalPages = Math.ceil(total / take);
+
+    return {
+      data: posts,
+      total,
+      totalPages,
+    };
   }
 
   findAllUser(id: number) {
