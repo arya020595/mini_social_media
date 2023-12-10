@@ -1,7 +1,7 @@
 export async function getPosts(id: any = null) {
   try {
     const baseURL = import.meta.env.VITE_BASE_URL;
-    const url = id ? `${baseURL}/posts/${id}` : `${baseURL}/posts`;
+    const url = id ? `${baseURL}/api/posts/${id}` : `${baseURL}/api/posts`;
 
     const response = await fetch(url); // Use the constructed URL here
 
