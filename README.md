@@ -1,8 +1,12 @@
 **HOW TO RUN BACKEND**
 1. cd backend
-2. npx prisma migrate dev
-3. npx prisma db seed
-4. yarn start dev
+2. pnpm install
+3. open .env file and put DATABASE_URL="mysql://USERNAME:PASSWORD@localhost:3306/lvior"
+
+   Example: DATABASE_URL="mysql://root:root@localhost:3306/lvior"
+5. npx prisma migrate dev
+6. npx prisma db seed
+7. pnpm start dev
 
 ***Collection Postman:***
 
@@ -10,4 +14,6 @@ https://api.postman.com/collections/7412551-fb30cd8e-9b40-4bfe-9490-7922d5db7ee6
 
 **HOW TO RUN FRONTEND**
 1. cd frontend
-2. yarn dev
+2. pnpm install
+3. open .env file and put VITE_BASE_URL=http://localhost:3000
+4. pnpm dev
