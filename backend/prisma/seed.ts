@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Like, Post, PrismaClient, User } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -17,13 +18,14 @@ const users = async () => {
   const amountOfUsers = 10;
 
   const users: User[] = [];
+  const roundsOfHashing = 10;
 
   for (let i = 1; i <= amountOfUsers; i++) {
     const user: User = {
       id: i,
       email: faker.internet.email(),
       username: faker.internet.userName(),
-      password: faker.internet.password(),
+      password: await bcrypt.hash('password', roundsOfHashing),
       name: faker.person.firstName(),
       createdAt: faker.date.past(),
       updatedAt: faker.date.recent(),
