@@ -11,8 +11,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Post as PostModel, Prisma } from '@prisma/client';
+import { Post as PostModel } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsService } from './posts.service';
 
 @ApiTags('Posts')
@@ -23,7 +25,7 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Post()
-  create(@Body() createPostDto: Prisma.PostCreateInput): Promise<PostModel> {
+  create(@Body() createPostDto: CreatePostDto): Promise<PostModel> {
     return this.postsService.create(createPostDto);
   }
 
@@ -60,7 +62,7 @@ export class PostsController {
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updatePostDto: Prisma.PostUpdateInput,
+    @Body() updatePostDto: UpdatePostDto,
   ): Promise<PostModel> {
     return this.postsService.update(id, updatePostDto);
   }
