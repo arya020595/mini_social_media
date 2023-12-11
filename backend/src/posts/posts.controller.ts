@@ -30,8 +30,11 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Get()
-  findAll(@Query('skip') skip: number = 0, @Query('take') take: number = 10) {
-    return this.postsService.findAll({ skip: +skip, take: +take });
+  findAll(
+    @Query('skip', ParseIntPipe) skip: number = 0,
+    @Query('take', ParseIntPipe) take: number = 10,
+  ) {
+    return this.postsService.findAll({ skip, take });
   }
 
   @UseGuards(JwtAuthGuard)
@@ -39,10 +42,10 @@ export class PostsController {
   @Get('user/:id')
   findAllUser(
     @Param('id', ParseIntPipe) id: number,
-    @Query('skip') skip: number = 0,
-    @Query('take') take: number = 10,
+    @Query('skip', ParseIntPipe) skip: number = 0,
+    @Query('take', ParseIntPipe) take: number = 10,
   ) {
-    return this.postsService.findAllUser({ id, skip: +skip, take: +take });
+    return this.postsService.findAllUser({ id, skip, take });
   }
 
   @UseGuards(JwtAuthGuard)
