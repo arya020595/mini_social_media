@@ -11,6 +11,7 @@ async function bootstrap() {
     .setDescription('The lvior API')
     .setVersion('1.0')
     .addTag('lviors')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('', app, document);

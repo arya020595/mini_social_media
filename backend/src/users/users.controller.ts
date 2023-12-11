@@ -6,10 +6,14 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UsersService } from './users.service';
 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -20,16 +24,22 @@ export class UsersController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   update(
     @Param('id') id: string,
     @Body() updateUserDto: Prisma.UserUpdateInput,
@@ -38,6 +48,8 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }

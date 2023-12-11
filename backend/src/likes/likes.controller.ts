@@ -1,7 +1,9 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { LikesService } from './likes.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Likes')
 @Controller('likes')
 export class LikesController {
   constructor(private readonly likesService: LikesService) {}
