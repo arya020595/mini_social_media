@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsInt, IsNotEmpty } from 'class-validator';
 
 export class CreateLikeDto {
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty()
   @ApiProperty()
   authorId: number;
 
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty()
   @ApiProperty()
   postId: number;
