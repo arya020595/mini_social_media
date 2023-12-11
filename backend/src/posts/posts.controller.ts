@@ -30,7 +30,7 @@ export class PostsController {
   @ApiBearerAuth()
   @Get()
   findAll(@Query('skip') skip: number = 0, @Query('take') take: number = 10) {
-    return this.postsService.findAll({ skip, take });
+    return this.postsService.findAll({ skip: +skip, take: +take });
   }
 
   @UseGuards(JwtAuthGuard)
