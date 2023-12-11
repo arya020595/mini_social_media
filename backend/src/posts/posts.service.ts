@@ -36,17 +36,31 @@ export class PostsService {
     };
   }
 
-  findAllUser(id: number) {
-    return this.prisma.post.findMany({
-      where: {
-        authorId: id,
-      },
-      include: {
-        _count: {
-          select: { likes: true },
+  async findAllUser({ id, skip = 0, take = 10 }) {
+    const [posts, total] = await Promise.all([
+      this.prisma.post.findMany({
+        skip,
+        take,
+        where: {
+          authorId: id,
         },
-      },
-    });
+        include: {
+          author: true,
+          _count: {
+            select: { likes: true },
+          },
+        },
+      }),
+      this.prisma.post.count(), // Fetch total count of posts
+    ]);
+
+    const totalPages = Math.ceil(total / take);
+
+    return {
+      data: posts,
+      total,
+      totalPages,
+    };
   }
 
   findOne(id: number) {
