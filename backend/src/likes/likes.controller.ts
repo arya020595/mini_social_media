@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Like } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateLikeDto } from './dto/create-like.dto';
 import { LikesService } from './likes.service';
@@ -12,12 +13,12 @@ export class LikesController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Post()
-  create(@Body() createLikeDto: CreateLikeDto) {
+  create(@Body() createLikeDto: CreateLikeDto): Promise<Like> {
     return this.likesService.create(createLikeDto);
   }
 
   @Delete()
-  remove(@Body() createLikeDto: CreateLikeDto) {
+  remove(@Body() createLikeDto: CreateLikeDto): Promise<Like> {
     return this.likesService.remove(createLikeDto);
   }
 }

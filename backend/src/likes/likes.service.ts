@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Like } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { CreateLikeDto } from './dto/create-like.dto';
 
@@ -6,7 +7,7 @@ import { CreateLikeDto } from './dto/create-like.dto';
 export class LikesService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createLikeDto: CreateLikeDto) {
+  async create(createLikeDto: CreateLikeDto): Promise<Like> {
     const existingLike = await this.prisma.like.findFirst({
       where: {
         authorId: createLikeDto.authorId,
@@ -21,7 +22,7 @@ export class LikesService {
     }
   }
 
-  async remove(createLikeDto: CreateLikeDto) {
+  async remove(createLikeDto: CreateLikeDto): Promise<Like> {
     const existingLike = await this.prisma.like.findFirst({
       where: {
         authorId: createLikeDto.authorId,

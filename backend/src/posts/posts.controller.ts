@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Prisma } from '@prisma/client';
+import { Post as PostModel, Prisma } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { PostsService } from './posts.service';
 
@@ -23,7 +23,7 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Post()
-  create(@Body() createPostDto: Prisma.PostCreateInput) {
+  create(@Body() createPostDto: Prisma.PostCreateInput): Promise<PostModel> {
     return this.postsService.create(createPostDto);
   }
 
@@ -51,7 +51,7 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<PostModel> {
     return this.postsService.findOne(id);
   }
 
@@ -61,14 +61,14 @@ export class PostsController {
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updatePostDto: Prisma.PostUpdateInput,
-  ) {
+  ): Promise<PostModel> {
     return this.postsService.update(id, updatePostDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseIntPipe) id: number): Promise<PostModel> {
     return this.postsService.remove(id);
   }
 }

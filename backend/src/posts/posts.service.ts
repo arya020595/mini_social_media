@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Post, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class PostsService {
   constructor(private prisma: PrismaService) {}
 
-  create(createPostDto: Prisma.PostCreateInput) {
+  create(createPostDto: Prisma.PostCreateInput): Promise<Post> {
     return this.prisma.post.create({
       data: createPostDto,
     });
@@ -74,7 +74,7 @@ export class PostsService {
     });
   }
 
-  update(id: number, updatePostDto: Prisma.PostUpdateInput) {
+  update(id: number, updatePostDto: Prisma.PostUpdateInput): Promise<Post> {
     return this.prisma.post.update({
       where: {
         id,
@@ -83,7 +83,7 @@ export class PostsService {
     });
   }
 
-  remove(id: number) {
+  remove(id: number): Promise<Post> {
     return this.prisma.post.delete({
       where: {
         id,
