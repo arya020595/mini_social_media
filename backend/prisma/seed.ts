@@ -14,7 +14,7 @@ async function main() {
 }
 
 const users = async () => {
-  const amountOfUsers = 5;
+  const amountOfUsers = 10;
 
   const users: User[] = [];
 
@@ -23,6 +23,7 @@ const users = async () => {
       id: i,
       email: faker.internet.email(),
       username: faker.internet.userName(),
+      password: faker.internet.password(),
       name: faker.person.firstName(),
       createdAt: faker.date.past(),
       updatedAt: faker.date.recent(),
