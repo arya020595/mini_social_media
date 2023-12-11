@@ -1,31 +1,42 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { CreateLikeDto } from './dto/create-like.dto';
 
 @Injectable()
 export class LikesService {
   constructor(private prisma: PrismaService) {}
 
-  create(createLikeDto: Prisma.LikeCreateInput) {
-    return this.prisma.like.create({
-      data: createLikeDto,
+  async create(createLikeDto: CreateLikeDto) {
+    const existingLike = await this.prisma.like.findFirst({
+      where: {
+        authorId: createLikeDto.authorId,
+        postId: createLikeDto.postId,
+      },
     });
+
+    if (!existingLike) {
+      return await this.prisma.like.create({
+        data: createLikeDto,
+      });
+    }
   }
 
-  findAll() {
-    return `This action returns all likes`;
-  }
+  async remove(createLikeDto: CreateLikeDto) {
+    const existingLike = await this.prisma.like.findFirst({
+      where: {
+        authorId: createLikeDto.authorId,
+        postId: createLikeDto.postId,
+      },
+    });
 
-  findOne(id: number) {
-    return `This action returns a #${id} like`;
-  }
+    console.log(existingLike);
 
-  // remove(authorId: number, postId: number) {
-  //   return this.prisma.like.delete({
-  //     where: {
-  //       authorId,
-  //       postId,
-  //     },
-  //   });
-  // }
+    if (existingLike) {
+      return this.prisma.like.delete({
+        where: {
+          id: existingLike.id,
+        },
+      });
+    }
+  }
 }

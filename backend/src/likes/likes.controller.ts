@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Prisma } from '@prisma/client';
-import { LikesService } from './likes.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { CreateLikeDto } from './dto/create-like.dto';
+import { LikesService } from './likes.service';
 
 @ApiTags('Likes')
 @Controller('likes')
@@ -12,22 +12,12 @@ export class LikesController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Post()
-  create(@Body() createLikeDto: Prisma.LikeCreateInput) {
+  create(@Body() createLikeDto: CreateLikeDto) {
     return this.likesService.create(createLikeDto);
   }
 
-  @Get()
-  findAll() {
-    return this.likesService.findAll();
+  @Delete()
+  remove(@Body() createLikeDto: CreateLikeDto) {
+    return this.likesService.remove(createLikeDto);
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.likesService.findOne(+id);
-  }
-
-  // @Delete(':authorId/:postId')
-  // remove(@Param('authorId') authorId: string, @Param('postId') postId: string) {
-  //   return this.likesService.remove(+authorId, +postId);
-  // }
 }
