@@ -29,8 +29,6 @@ export class LikesService {
       },
     });
 
-    console.log(existingLike);
-
     if (existingLike) {
       return this.prisma.like.delete({
         where: {
