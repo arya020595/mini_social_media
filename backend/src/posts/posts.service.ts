@@ -60,7 +60,11 @@ export class PostsService {
           },
         },
       }),
-      this.prisma.post.count(), // Fetch total count of posts
+      this.prisma.post.count({
+        where: {
+          authorId: authorId,
+        },
+      }), // Fetch total count of posts for the specified author
     ]);
 
     const totalPages = Math.ceil(total / take);
