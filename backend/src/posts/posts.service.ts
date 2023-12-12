@@ -45,13 +45,13 @@ export class PostsService {
     };
   }
 
-  async findAllUser({ id, skip = 0, take = 10 }) {
+  async findAllUser({ authorId, skip = 0, take = 10 }) {
     const [posts, total] = await Promise.all([
       this.prisma.post.findMany({
         skip,
         take,
         where: {
-          authorId: id,
+          authorId: authorId,
         },
         include: {
           author: true,

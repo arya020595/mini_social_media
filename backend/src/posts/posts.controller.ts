@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -41,13 +42,14 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Get('user/:id')
+  @Get('user/')
   findAllUser(
-    @Param('id', ParseIntPipe) id: number,
+    @Request() req,
     @Query('skip', ParseIntPipe) skip: number = 0,
     @Query('take', ParseIntPipe) take: number = 10,
   ) {
-    return this.postsService.findAllUser({ id, skip, take });
+    const authorId = req.user.id;
+    return this.postsService.findAllUser({ authorId, skip, take });
   }
 
   @UseGuards(JwtAuthGuard)
