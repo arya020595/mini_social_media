@@ -3,6 +3,10 @@ import { Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
 function Sidebar() {
+  const logOut = async () => {
+    localStorage.removeItem("accessToken");
+  };
+
   return (
     <>
       <Nav className="nav flex-column gap-3 text-center">
@@ -18,7 +22,7 @@ function Sidebar() {
         <NavLink to="/post" className="nav-link text-dark">
           Post
         </NavLink>
-        <NavLink to="/logout" className="nav-link text-dark">
+        <NavLink to="/login" onClick={logOut} className="nav-link text-dark">
           <FontAwesomeIcon icon={["fas", "arrow-right-from-bracket"]} />
           <span className="ms-2">Logout</span>
         </NavLink>

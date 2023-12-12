@@ -3,9 +3,14 @@ import CardComponent from "../components/CardComponent";
 
 import { useLoaderData } from "react-router";
 import { getPosts } from "../api";
+import requireAuth from "../utils";
 
-export async function loader() {
-  return getPosts();
+export async function loader({ request }: any) {
+  await requireAuth(request);
+  const accessToken = localStorage.getItem("accessToken");
+  const skip = 0;
+  const take = 10;
+  return getPosts(accessToken, skip, take);
 }
 
 function Home() {

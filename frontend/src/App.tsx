@@ -7,8 +7,11 @@ import Error from "./components/Error";
 import Layout from "./components/Layout";
 import ChangePassword from "./pages/ChangePassword";
 import Home, { loader as homesloader } from "./pages/Home";
-import Login from "./pages/Login";
-import Post from "./pages/Post";
+import Login, {
+  action as loginAction,
+  loader as loginLoader,
+} from "./pages/Login";
+import Post, { loader as postsloader } from "./pages/Post";
 import Register from "./pages/Register";
 import User from "./pages/User";
 
@@ -28,12 +31,17 @@ function App() {
           <Route
             path="post"
             element={<Post />}
-            loader={homesloader}
+            loader={postsloader}
             errorElement={<Error />}
           />
         </Route>
         <Route element={<AuthLayout />}>
-          <Route path="login" element={<Login />} />
+          <Route
+            path="login"
+            element={<Login />}
+            loader={loginLoader}
+            action={loginAction}
+          />
           <Route path="register" element={<Register />} />
         </Route>
         <Route path="*" element={<NotFound />} />

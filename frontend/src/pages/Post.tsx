@@ -1,10 +1,15 @@
 import { Row } from "react-bootstrap";
 import { useLoaderData } from "react-router";
-import { getPosts } from "../api";
+import { getUserPosts } from "../api";
 import CardComponent from "../components/CardComponent";
+import requireAuth from "../utils";
 
-export async function loader() {
-  return getPosts();
+export async function loader({ request }: any) {
+  await requireAuth(request);
+  const accessToken = localStorage.getItem("accessToken");
+  const skip = 0;
+  const take = 10;
+  return getUserPosts(accessToken, skip, take);
 }
 
 function Post() {
