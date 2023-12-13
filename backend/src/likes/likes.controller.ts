@@ -17,6 +17,8 @@ export class LikesController {
     return this.likesService.create(createLikeDto);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete()
   remove(@Body() createLikeDto: CreateLikeDto): Promise<Like> {
     return this.likesService.remove(createLikeDto);

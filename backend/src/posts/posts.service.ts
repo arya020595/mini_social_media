@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { Post } from '@prisma/client';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Post, Prisma, PrismaClient } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -87,20 +87,65 @@ export class PostsService {
     });
   }
 
-  update(id: number, updatePostDto: UpdatePostDto): Promise<Post> {
-    return this.prisma.post.update({
+  async update(id: number, updatePostDto: UpdatePostDto): Promise<Post> {
+    const existingPost = await this.prisma.post.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!existingPost) {
+      throw new NotFoundException(`Post with ${id} does not exist.`);
+    }
+
+    const updatedPost = await this.prisma.post.update({
       where: {
         id,
       },
       data: updatePostDto,
     });
+
+    if (updatedPost) {
+      return updatedPost;
+    } else {
+      throw new Error(`Failed to update post with ID ${id}.`);
+    }
   }
 
-  remove(id: number): Promise<Post> {
-    return this.prisma.post.delete({
+  async remove(id: number): Promise<Post> {
+    const existingPost = await this.prisma.post.findUnique({
       where: {
         id,
       },
     });
+
+    if (!existingPost) {
+      throw new NotFoundException(`Post with ${id} does not exist.`);
+    }
+
+    const deleteLikes: Prisma.BatchPayload = await this.prisma.like.deleteMany({
+      where: {
+        postId: id,
+      },
+    });
+
+    const deletedPost: Post | Prisma.BatchPayload =
+      await this.prisma.post.delete({
+        where: {
+          id,
+        },
+      });
+
+    const transactionFunction = async (prisma: PrismaClient) => {
+      return [deleteLikes, deletedPost];
+    };
+
+    const transaction = await this.prisma.$transaction(transactionFunction);
+
+    if (deletedPost) {
+      return deletedPost;
+    } else {
+      throw new Error(`Failed to delete post with ID ${id}.`);
+    }
   }
 }
