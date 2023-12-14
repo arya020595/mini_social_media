@@ -25,7 +25,7 @@ model Post {
   tag       String
   image     String
   published Boolean?  @default(true)
-  author    User      @relation(fields: [authorId], references: [id])
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  Int
   likes     Like[]
   createdAt DateTime  @default(now())
@@ -34,9 +34,9 @@ model Post {
 
 model Like {
   id        Int       @default(autoincrement()) @id
-  author    User      @relation(fields: [authorId], references: [id])
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  Int
-  post      Post      @relation(fields: [postId], references: [id])
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

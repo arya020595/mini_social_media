@@ -1,5 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Post, Prisma, PrismaClient } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
+import { Post } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -88,16 +88,6 @@ export class PostsService {
   }
 
   async update(id: number, updatePostDto: UpdatePostDto): Promise<Post> {
-    const existingPost = await this.prisma.post.findUnique({
-      where: {
-        id,
-      },
-    });
-
-    if (!existingPost) {
-      throw new NotFoundException(`Post with ${id} does not exist.`);
-    }
-
     const updatedPost = await this.prisma.post.update({
       where: {
         id,
@@ -105,47 +95,16 @@ export class PostsService {
       data: updatePostDto,
     });
 
-    if (updatedPost) {
-      return updatedPost;
-    } else {
-      throw new Error(`Failed to update post with ID ${id}.`);
-    }
+    return updatedPost;
   }
 
   async remove(id: number): Promise<Post> {
-    const existingPost = await this.prisma.post.findUnique({
+    const deletedPost: Post = await this.prisma.post.delete({
       where: {
         id,
       },
     });
 
-    if (!existingPost) {
-      throw new NotFoundException(`Post with ${id} does not exist.`);
-    }
-
-    const deleteLikes: Prisma.BatchPayload = await this.prisma.like.deleteMany({
-      where: {
-        postId: id,
-      },
-    });
-
-    const deletedPost: Post | Prisma.BatchPayload =
-      await this.prisma.post.delete({
-        where: {
-          id,
-        },
-      });
-
-    const transactionFunction = async (prisma: PrismaClient) => {
-      return [deleteLikes, deletedPost];
-    };
-
-    const transaction = await this.prisma.$transaction(transactionFunction);
-
-    if (deletedPost) {
-      return deletedPost;
-    } else {
-      throw new Error(`Failed to delete post with ID ${id}.`);
-    }
+    return deletedPost;
   }
 }
