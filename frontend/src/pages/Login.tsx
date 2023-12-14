@@ -12,24 +12,21 @@ import { authLogin } from "../api";
 export function loader({ request }: any) {
   const accessToken = localStorage.getItem("accessToken");
 
-  if (accessToken) return redirect("/");
+  if (accessToken == null || accessToken === "undefined") {
+    return null;
+  }
 
-  return null;
+  return redirect("/");
 }
 
 export async function action({ request }: any) {
   const form = await request.formData();
   const username = await form.get("username");
   const password = await form.get("password");
-  const pathname = "/";
 
   try {
     const response = await authLogin(username, password);
     localStorage.setItem("accessToken", response.accessToken);
-
-    if (response.accessToken) {
-      return redirect(pathname);
-    }
 
     return null;
   } catch (error: any) {
