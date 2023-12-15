@@ -13,7 +13,7 @@ import Login, {
 } from "./pages/Login";
 import Post, { loader as postsloader } from "./pages/Post";
 import Register from "./pages/Register";
-import User from "./pages/User";
+import User, { action as userAction, loader as userloader } from "./pages/User";
 
 function App() {
   const router = createBrowserRouter(
@@ -26,7 +26,13 @@ function App() {
             loader={homesloader}
             errorElement={<Error />}
           />
-          <Route path="user" element={<User />} />
+          <Route
+            path="user"
+            element={<User />}
+            loader={userloader}
+            action={userAction}
+            errorElement={<Error />}
+          />
           <Route path="change-password" element={<ChangePassword />} />
           <Route
             path="post"
@@ -41,6 +47,7 @@ function App() {
             element={<Login />}
             loader={loginLoader}
             action={loginAction}
+            errorElement={<Error />}
           />
           <Route path="register" element={<Register />} />
         </Route>

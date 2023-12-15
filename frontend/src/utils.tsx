@@ -2,7 +2,6 @@
 import { redirect } from "react-router-dom";
 
 export default function requireAuth(request: any) {
-  const pathname = new URL(request.url).pathname;
   const accessToken = localStorage.getItem("accessToken");
 
   if (accessToken == null || accessToken == "undefined") {

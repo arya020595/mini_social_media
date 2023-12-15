@@ -24,4 +24,8 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @ApiProperty({ description: 'The image of the user' })
+  @IsString()
+  image: string;
 }

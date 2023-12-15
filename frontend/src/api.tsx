@@ -1,3 +1,5 @@
+import { redirect } from "react-router";
+
 export async function getPosts(
   accessToken: string | null,
   skip: number,
@@ -18,6 +20,7 @@ export async function getPosts(
     });
 
     if (!response.ok) {
+      handleUnauthorized(response);
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
@@ -49,6 +52,7 @@ export async function getUserPosts(
     });
 
     if (!response.ok) {
+      handleUnauthorized(response);
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
@@ -79,18 +83,64 @@ export async function authLogin(username: string, password: string) {
 export async function createUser(id: number) {
   try {
     const baseURL = import.meta.env.VITE_BASE_URL;
-    const url = id ? `${baseURL}/api/posts/${id}` : `${baseURL}/api/posts`;
+    const url = id ? `${baseURL}/api/users/${id}` : `${baseURL}/api/users`;
 
     const response = await fetch(url); // Use the constructed URL here
 
     if (!response.ok) {
+      handleUnauthorized(response);
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching posts:", error);
+    console.error("Error fetching users:", error);
     throw error; // Rethrow the error for the calling code to handle
   }
 }
+
+export async function updateUser(
+  id: number,
+  name: string,
+  username: string,
+  email: string
+) {
+  try {
+    const baseURL = import.meta.env.VITE_BASE_URL;
+    const url = `${baseURL}/api/users/${id}`;
+    const accessToken: string | null = localStorage.getItem("accessToken");
+
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        name,
+        username,
+        email,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    throw error; // Rethrow the error for the calling code to handle
+  }
+}
+
+const handleUnauthorized = (response: any) => {
+  debugger;
+  if (response.status === 401) {
+    localStorage.removeItem("accessToken");
+    throw redirect(`/login`);
+  }
+};

@@ -25,6 +25,7 @@ const users = async () => {
       id: i,
       email: faker.internet.email(),
       username: faker.internet.userName(),
+      image: faker.image.url({ width: 600, height: 600 }),
       password: await bcrypt.hash('password', roundsOfHashing),
       name: faker.person.firstName(),
       createdAt: faker.date.past(),

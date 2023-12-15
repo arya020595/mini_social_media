@@ -27,6 +27,7 @@ export async function action({ request }: any) {
   try {
     const response = await authLogin(username, password);
     localStorage.setItem("accessToken", response.accessToken);
+    localStorage.setItem("user", JSON.stringify(response.user));
 
     return null;
   } catch (error: any) {

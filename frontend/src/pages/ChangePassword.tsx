@@ -30,10 +30,10 @@ function ChangePassword() {
                   placeholder="Confirm New Password"
                 />
               </Form.Group>
+              <div className="d-grid">
+                <Button variant="secondary">UPDATE</Button>
+              </div>
             </Form>
-            <div className="d-grid">
-              <Button variant="secondary">UPDATE</Button>
-            </div>
           </Col>
         </Row>
       </Container>
