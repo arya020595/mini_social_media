@@ -4,7 +4,6 @@ import { Button, Row } from "react-bootstrap";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
 import { getUserPosts } from "../api";
-import "../assets/Post.css";
 import CardComponent from "../components/CardComponent";
 import PaginationComponent from "../components/PaginationComponent";
 import requireAuth from "../utils";

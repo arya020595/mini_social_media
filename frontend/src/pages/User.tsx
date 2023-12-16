@@ -12,14 +12,15 @@ import { updateUser } from "../api";
 import requireAuth from "../utils";
 
 export async function action({ request }: any) {
-  const form = await request.formData();
-  const id = form.get("id");
-  const name = await form.get("name");
-  const username = await form.get("username");
-  const email = await form.get("email");
+  const data = Object.fromEntries(await request.formData());
 
   try {
-    const response = await updateUser(id, name, username, email);
+    const response = await updateUser(
+      data.id,
+      data.name,
+      data.username,
+      data.email
+    );
     localStorage.setItem("user", JSON.stringify(response));
 
     return null;

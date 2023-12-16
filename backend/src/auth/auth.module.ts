@@ -7,14 +7,12 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 
-export const jwtSecret = 'zjP9h6ZI5LoSKCRj';
-
 @Module({
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: jwtSecret,
-      signOptions: { expiresIn: '30m' }, // e.g. 30s, 7d, 24h
+      secret: process.env.SECRETKEY,
+      signOptions: { expiresIn: process.env.EXPIRESIN }, // e.g. 30s, 7d, 24h
     }),
     UsersModule,
   ],

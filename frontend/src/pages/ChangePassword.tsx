@@ -10,18 +10,17 @@ import { changePasswordUser } from "../api";
 import requireAuth from "../utils";
 
 export async function action({ request }: any) {
-  const form = await request.formData();
-  const id = form.get("id");
-  const new_password = await form.get("new_password");
-  const oldPassword = await form.get("oldPassword");
-  const confirm_new_password = await form.get("confirm_new_password");
+  const data = Object.fromEntries(await request.formData());
 
-  console.log(oldPassword, confirm_new_password);
-
-  if (confirm_new_password !== new_password) throw new Error(`NOT SAME!`);
+  if (data.confirm_new_password !== data.new_password)
+    throw new Error(`NOT SAME!`);
 
   try {
-    const response = await changePasswordUser(id, oldPassword, new_password);
+    const response = await changePasswordUser(
+      data.id,
+      data.oldPassword,
+      data.new_password
+    );
     localStorage.setItem("user", JSON.stringify(response));
 
     return null;
