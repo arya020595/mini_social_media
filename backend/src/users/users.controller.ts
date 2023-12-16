@@ -50,6 +50,16 @@ export class UsersController {
     return this.usersService.update(id, updateUserDto);
   }
 
+  @Patch('changePassword/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  changePassword(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<User> {
+    return this.usersService.changePassword(id, updateUserDto);
+  }
+
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()

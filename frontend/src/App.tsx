@@ -5,7 +5,10 @@ import NotFound from "./NotFound";
 import AuthLayout from "./components/AuthLayout";
 import Error from "./components/Error";
 import Layout from "./components/Layout";
-import ChangePassword from "./pages/ChangePassword";
+import ChangePassword, {
+  action as ChangePasswordAction,
+  loader as ChangePasswordLoader,
+} from "./pages/ChangePassword";
 import Home, { loader as homesloader } from "./pages/Home";
 import Login, {
   action as loginAction,
@@ -33,7 +36,12 @@ function App() {
             action={userAction}
             errorElement={<Error />}
           />
-          <Route path="change-password" element={<ChangePassword />} />
+          <Route
+            path="change-password"
+            element={<ChangePassword />}
+            loader={ChangePasswordLoader}
+            action={ChangePasswordAction}
+          />
           <Route
             path="post"
             element={<Post />}

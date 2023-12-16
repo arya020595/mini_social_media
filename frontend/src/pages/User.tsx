@@ -69,7 +69,6 @@ function User() {
                   <FormBootstrap.Control
                     name="id"
                     type="hidden"
-                    placeholder="Name"
                     defaultValue={user.id}
                   />
                 </FormBootstrap.Group>
