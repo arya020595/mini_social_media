@@ -1,7 +1,10 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { Row } from "react-bootstrap";
+import { Button, Row } from "react-bootstrap";
 import { useLoaderData } from "react-router";
+import { Link } from "react-router-dom";
 import { getUserPosts } from "../api";
+import "../assets/Post.css";
 import CardComponent from "../components/CardComponent";
 import PaginationComponent from "../components/PaginationComponent";
 import requireAuth from "../utils";
@@ -35,6 +38,15 @@ function Post() {
 
   return (
     <>
+      <Link to="/postForm">
+        <Button
+          variant="secondary"
+          style={{ width: "75px", height: "75px" }}
+          className="btn btn-lg rounded-circle position-fixed bottom-0 end-0 z-3 m-4">
+          <FontAwesomeIcon icon={["fas", "plus"]} />
+        </Button>
+      </Link>
+
       <Row xs={1} md={2} lg={4} className="g-3">
         {datas?.data.map((item: any, index: number) => (
           <CardComponent key={index} data={item} />

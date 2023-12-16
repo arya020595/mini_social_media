@@ -15,6 +15,7 @@ import Login, {
   loader as loginLoader,
 } from "./pages/Login";
 import Post, { loader as postsloader } from "./pages/Post";
+import PostForm from "./pages/PostForm";
 import Register from "./pages/Register";
 import User, { action as userAction, loader as userloader } from "./pages/User";
 
@@ -37,7 +38,7 @@ function App() {
             errorElement={<Error />}
           />
           <Route
-            path="change-password"
+            path="changePassword"
             element={<ChangePassword />}
             loader={ChangePasswordLoader}
             action={ChangePasswordAction}
@@ -46,6 +47,11 @@ function App() {
             path="post"
             element={<Post />}
             loader={postsloader}
+            errorElement={<Error />}
+          />
+          <Route
+            path="postForm"
+            element={<PostForm />}
             errorElement={<Error />}
           />
         </Route>

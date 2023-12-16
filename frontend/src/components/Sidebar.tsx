@@ -16,7 +16,7 @@ function Sidebar() {
         <NavLink to="/user" className="nav-link text-dark">
           User
         </NavLink>
-        <NavLink to="/change-password" className="nav-link text-dark">
+        <NavLink to="/changePassword" className="nav-link text-dark">
           Change Password
         </NavLink>
         <NavLink to="/post" className="nav-link text-dark">
