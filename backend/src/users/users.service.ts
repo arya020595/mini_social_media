@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -12,7 +13,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export const roundsOfHashing = 10;
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private cloudinary: CloudinaryService,
+  ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const hashedPassword = await bcrypt.hash(
@@ -39,12 +43,28 @@ export class UsersService {
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(
+    id: number,
+    updateUserDto: UpdateUserDto,
+    file: Express.Multer.File,
+  ): Promise<User> {
+    let userData = updateUserDto;
+
+    // Check if a file is provided
+    if (file) {
+      // Upload the file to Cloudinary
+      const cloudinaryResponse = await this.cloudinary.uploadFile(file);
+      // Update the user data with the Cloudinary URL
+      userData = {
+        ...userData,
+        image: cloudinaryResponse.secure_url,
+      };
+    }
+
+    // Update the user in the database
     return this.prisma.user.update({
-      where: {
-        id,
-      },
-      data: updateUserDto,
+      where: { id },
+      data: userData,
     });
   }
 

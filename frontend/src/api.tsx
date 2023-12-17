@@ -32,6 +32,37 @@ export async function getPosts(
   }
 }
 
+export async function createPost(caption: string, tag: string) {
+  try {
+    const baseURL = import.meta.env.VITE_BASE_URL;
+    const url = `${baseURL}/api/posts/`;
+    const accessToken: string | null = localStorage.getItem("accessToken");
+
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        caption,
+        tag,
+      }),
+    });
+
+    if (!response.ok) {
+      handleUnauthorized(response);
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    throw error; // Rethrow the error for the calling code to handle
+  }
+}
+
 export async function getUserPosts(
   accessToken: string | null,
   skip: number,
@@ -104,24 +135,29 @@ export async function updateUser(
   id: number,
   name: string,
   username: string,
-  email: string
+  email: string,
+  file: any
 ) {
   try {
     const baseURL = import.meta.env.VITE_BASE_URL;
     const url = `${baseURL}/api/users/${id}`;
     const accessToken: string | null = localStorage.getItem("accessToken");
 
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("username", username);
+    formData.append("email", email);
+
+    if (file) {
+      formData.append("file", file);
+    }
+
     const response = await fetch(url, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({
-        name,
-        username,
-        email,
-      }),
+      body: formData,
     });
 
     if (!response.ok) {

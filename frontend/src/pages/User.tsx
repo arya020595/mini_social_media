@@ -19,7 +19,8 @@ export async function action({ request }: any) {
       data.id,
       data.name,
       data.username,
-      data.email
+      data.email,
+      data.file
     );
     localStorage.setItem("user", JSON.stringify(response));
 
@@ -64,7 +65,7 @@ function User() {
       <Container>
         <Row xs={1} md={2} lg={3} className="justify-content-center">
           <Col>
-            <Form replace method="post">
+            <Form replace method="post" encType="multipart/form-data">
               <>
                 <FormBootstrap.Group className="mb-3">
                   <FormBootstrap.Control
@@ -99,7 +100,7 @@ function User() {
                 </FormBootstrap.Group>
                 <FormBootstrap.Group className="mb-3">
                   <FormBootstrap.Control
-                    name="photo"
+                    name="file"
                     type="file"
                     onChange={handleFileChange}
                   />
