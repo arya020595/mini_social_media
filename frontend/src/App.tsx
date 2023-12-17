@@ -15,8 +15,11 @@ import Login, {
   loader as loginLoader,
 } from "./pages/Login";
 import Post, { loader as postsloader } from "./pages/Post";
-import PostForm from "./pages/PostForm";
-import Register from "./pages/Register";
+import PostForm, { action as postsAction } from "./pages/PostForm";
+import Register, {
+  action as registerAction,
+  loader as registerLoader,
+} from "./pages/Register";
 import User, { action as userAction, loader as userloader } from "./pages/User";
 
 function App() {
@@ -52,6 +55,7 @@ function App() {
           <Route
             path="postForm"
             element={<PostForm />}
+            action={postsAction}
             errorElement={<Error />}
           />
         </Route>
@@ -63,7 +67,12 @@ function App() {
             action={loginAction}
             errorElement={<Error />}
           />
-          <Route path="register" element={<Register />} />
+          <Route
+            path="register"
+            element={<Register />}
+            loader={registerLoader}
+            action={registerAction}
+          />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Route>

@@ -25,8 +25,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create(createUserDto);
+  @UseInterceptors(FileInterceptor('file'))
+  create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<User> {
+    return this.usersService.create(createUserDto, file);
   }
 
   @Get()

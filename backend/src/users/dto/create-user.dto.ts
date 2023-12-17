@@ -28,11 +28,11 @@ export class CreateUserDto {
 
   @ApiProperty({ description: 'The name of the user' })
   @IsString()
-  @IsOptional()
   @IsNotEmpty()
   name: string;
 
   @ApiProperty({ description: 'The image of the user' })
   @IsString()
-  image: string;
+  @IsOptional()
+  image?: string;
 }

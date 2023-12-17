@@ -23,7 +23,7 @@ model User {
 model Post {
   id        Int       @default(autoincrement()) @id
   caption   String
-  tag       String
+  tag       String?
   image     String?
   published Boolean?  @default(true)
   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)

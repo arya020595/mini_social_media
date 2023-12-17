@@ -9,8 +9,11 @@ import {
   Post,
   Query,
   Request,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Post as PostModel } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -26,8 +29,14 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Post()
-  create(@Body() createPostDto: CreatePostDto): Promise<PostModel> {
-    return this.postsService.create(createPostDto);
+  @UseInterceptors(FileInterceptor('file'))
+  create(
+    @Request() req,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() createPostDto: CreatePostDto,
+  ): Promise<PostModel> {
+    const authorId = req.user.id;
+    return this.postsService.create(createPostDto, file, authorId);
   }
 
   @UseGuards(JwtAuthGuard)

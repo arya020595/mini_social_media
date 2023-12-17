@@ -1,16 +1,35 @@
 import { useState } from "react";
-import { Button, Card, Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Button, Card, Form as FormBootstrap } from "react-bootstrap";
+import { Form, Link, useNavigation } from "react-router-dom";
+import { createUser } from "../api";
 import "../assets/Register.css";
 
+export async function action({ request }: any) {
+  const data = Object.fromEntries(await request.formData());
+
+  try {
+    const response = await createUser(
+      data.name,
+      data.username,
+      data.email,
+      data.password,
+      data.file
+    );
+
+    return null;
+  } catch (error: any) {
+    console.error("Login failed:", error.message);
+    return error.message;
+  }
+}
+
+export async function loader({ request }: any) {
+  return null;
+}
+
 function Register() {
-  const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
-
-  const handleSubmit = () => {
-    navigate("/");
-  };
-
+  const navigation: any = useNavigation();
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
     // Update the state with the selected file
@@ -23,55 +42,74 @@ function Register() {
     <Card border="Secondary">
       <Card.Title className="mt-3 text-dark">REGISTER</Card.Title>
       <Card.Body>
-        <Form>
-          <Form.Group className="mb-3">
-            <Form.Control name="name" type="text" placeholder="Name" />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Control name="username" type="text" placeholder="Username" />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Control name="email" type="email" placeholder="Email" />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Control
-              name="password"
-              type="password"
-              placeholder="Password"
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Control
-              name="confirm_password"
-              type="password"
-              placeholder="Confirm Password"
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Control
-              name="photo"
-              type="file"
-              onChange={handleFileChange}
-            />
-            {selectedFile && (
-              <Card className="mt-3">
-                <Card.Img
-                  style={{ width: "100%" }}
-                  variant="top"
-                  src={URL.createObjectURL(selectedFile)}
-                />
-              </Card>
-            )}
-          </Form.Group>
+        <Form replace method="post" encType="multipart/form-data">
+          <>
+            <FormBootstrap.Group className="mb-3">
+              <FormBootstrap.Control
+                name="name"
+                type="text"
+                placeholder="Name"
+              />
+            </FormBootstrap.Group>
+            <FormBootstrap.Group className="mb-3">
+              <FormBootstrap.Control
+                name="username"
+                type="text"
+                placeholder="Username"
+              />
+            </FormBootstrap.Group>
+            <FormBootstrap.Group className="mb-3">
+              <FormBootstrap.Control
+                name="email"
+                type="email"
+                placeholder="Email"
+              />
+            </FormBootstrap.Group>
+            <FormBootstrap.Group className="mb-3">
+              <FormBootstrap.Control
+                name="password"
+                type="password"
+                placeholder="Password"
+              />
+            </FormBootstrap.Group>
+            <FormBootstrap.Group className="mb-3">
+              <FormBootstrap.Control
+                name="confirm_password"
+                type="password"
+                placeholder="Confirm Password"
+              />
+            </FormBootstrap.Group>
+            <FormBootstrap.Group className="mb-3">
+              <FormBootstrap.Control
+                name="file"
+                type="file"
+                onChange={handleFileChange}
+              />
+              {selectedFile && (
+                <Card className="mt-3">
+                  <Card.Img
+                    style={{ width: "100%" }}
+                    variant="top"
+                    src={URL.createObjectURL(selectedFile)}
+                  />
+                </Card>
+              )}
+            </FormBootstrap.Group>
+            <div className="d-grid gap-3">
+              <Button
+                type="submit"
+                disabled={navigation.state === "submitting"}
+                variant="secondary">
+                {navigation.state === "submitting"
+                  ? "Registering in..."
+                  : "Register"}
+              </Button>
+              <Link className="text-secondary text-decoration-none" to="/login">
+                Login
+              </Link>
+            </div>
+          </>
         </Form>
-        <div className="d-grid gap-3">
-          <Button variant="secondary" onClick={handleSubmit}>
-            REGISTER
-          </Button>
-          <Link className="text-secondary text-decoration-none" to="/login">
-            Login
-          </Link>
-        </div>
       </Card.Body>
     </Card>
   );

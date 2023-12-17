@@ -1,15 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { Post } from '@prisma/client';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { PrismaService } from 'src/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
 @Injectable()
 export class PostsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private cloudinary: CloudinaryService,
+  ) {}
 
-  create(createPostDto: CreatePostDto): Promise<Post> {
-    const { caption, tag, image, published, authorId } = createPostDto;
+  async create(
+    createPostDto: CreatePostDto,
+    file: Express.Multer.File,
+    authorId: number,
+  ): Promise<Post> {
+    let postData = createPostDto;
+
+    // Check if a file is provided
+    if (file) {
+      // Upload the file to Cloudinary
+      const cloudinaryResponse = await this.cloudinary.uploadFile(file);
+      // Update the user data with the Cloudinary URL
+      postData = {
+        ...postData,
+        image: cloudinaryResponse.secure_url,
+      };
+    }
+
+    const { caption, tag, image, published } = postData;
+
     return this.prisma.post.create({
       data: {
         caption,

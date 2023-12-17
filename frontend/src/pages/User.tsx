@@ -126,7 +126,7 @@ function User() {
                   disabled={navigation.state === "submitting"}
                   variant="secondary">
                   {navigation.state === "submitting"
-                    ? "Submit in..."
+                    ? "Submitting in..."
                     : "Submit"}
                 </Button>
               </div>

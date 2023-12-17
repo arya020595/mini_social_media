@@ -1,11 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreatePostDto {
   @ApiProperty({ description: 'The caption of the post' })
@@ -23,8 +17,8 @@ export class CreatePostDto {
 
   @ApiProperty({ description: 'The image URL of the post' })
   @IsString()
-  @IsNotEmpty()
-  image: string;
+  @IsOptional()
+  image?: string;
 
   @ApiProperty({
     description: 'The publish status of the post',
@@ -34,9 +28,4 @@ export class CreatePostDto {
   @IsBoolean()
   @IsOptional()
   published?: boolean;
-
-  @ApiProperty({ description: 'The ID of the author of the post' })
-  @IsInt()
-  @IsNotEmpty()
-  authorId: number;
 }

@@ -18,7 +18,11 @@ export class UsersService {
     private cloudinary: CloudinaryService,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(
+    createUserDto: CreateUserDto,
+    file: Express.Multer.File,
+  ): Promise<User> {
+    let userData = createUserDto;
     const hashedPassword = await bcrypt.hash(
       createUserDto.password,
       roundsOfHashing,
@@ -26,8 +30,19 @@ export class UsersService {
 
     createUserDto.password = hashedPassword;
 
+    // Check if a file is provided
+    if (file) {
+      // Upload the file to Cloudinary
+      const cloudinaryResponse = await this.cloudinary.uploadFile(file);
+      // Update the user data with the Cloudinary URL
+      userData = {
+        ...userData,
+        image: cloudinaryResponse.secure_url,
+      };
+    }
+
     return this.prisma.user.create({
-      data: createUserDto,
+      data: userData,
     });
   }
 
