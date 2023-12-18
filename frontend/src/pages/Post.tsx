@@ -37,7 +37,7 @@ function Post() {
 
   return (
     <>
-      <Link to="/postForm">
+      <Link to="/post-form">
         <Button
           variant="secondary"
           style={{ width: "75px", height: "75px" }}

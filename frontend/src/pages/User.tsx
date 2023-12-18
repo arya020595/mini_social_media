@@ -14,21 +14,16 @@ import requireAuth from "../utils";
 export async function action({ request }: any) {
   const data = Object.fromEntries(await request.formData());
 
-  try {
-    const response = await updateUser(
-      data.id,
-      data.name,
-      data.username,
-      data.email,
-      data.file
-    );
-    localStorage.setItem("user", JSON.stringify(response));
+  const response = await updateUser(
+    data.id,
+    data.name,
+    data.username,
+    data.email,
+    data.file
+  );
+  localStorage.setItem("user", JSON.stringify(response));
 
-    return null;
-  } catch (error: any) {
-    console.error("Login failed:", error.message);
-    return error.message;
-  }
+  return response;
 }
 
 export async function loader({ request }: any) {

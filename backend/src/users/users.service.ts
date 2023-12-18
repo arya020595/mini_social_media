@@ -1,7 +1,7 @@
 import {
   Injectable,
+  NotAcceptableException,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
@@ -104,7 +104,7 @@ export class UsersService {
     );
 
     if (!isOldPasswordValid) {
-      throw new UnauthorizedException('Invalid old password');
+      throw new NotAcceptableException('Invalid old password');
     }
 
     // Hash the new password before updating

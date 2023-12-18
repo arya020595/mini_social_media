@@ -41,10 +41,11 @@ function App() {
             errorElement={<Error />}
           />
           <Route
-            path="changePassword"
+            path="change-password"
             element={<ChangePassword />}
             loader={ChangePasswordLoader}
             action={ChangePasswordAction}
+            errorElement={<Error />}
           />
           <Route
             path="post"
@@ -53,7 +54,7 @@ function App() {
             errorElement={<Error />}
           />
           <Route
-            path="postForm"
+            path="post-form"
             element={<PostForm />}
             action={postsAction}
             errorElement={<Error />}
@@ -72,6 +73,7 @@ function App() {
             element={<Register />}
             loader={registerLoader}
             action={registerAction}
+            errorElement={<Error />}
           />
         </Route>
         <Route path="*" element={<NotFound />} />

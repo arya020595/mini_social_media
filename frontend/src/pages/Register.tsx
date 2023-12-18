@@ -7,20 +7,15 @@ import "../assets/Register.css";
 export async function action({ request }: any) {
   const data = Object.fromEntries(await request.formData());
 
-  try {
-    const response = await createUser(
-      data.name,
-      data.username,
-      data.email,
-      data.password,
-      data.file
-    );
+  const response = await createUser(
+    data.name,
+    data.username,
+    data.email,
+    data.password,
+    data.file
+  );
 
-    return null;
-  } catch (error: any) {
-    console.error("Login failed:", error.message);
-    return error.message;
-  }
+  return response;
 }
 
 export async function loader({ request }: any) {

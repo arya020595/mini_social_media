@@ -21,7 +21,7 @@ export async function getPosts(
 
     if (!response.ok) {
       handleUnauthorized(response);
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      throw await response.json();
     }
 
     const data = await response.json();
@@ -46,8 +46,6 @@ export async function createPost(caption: string, tag: string, file: any) {
       formData.append("file", file);
     }
 
-    debugger;
-
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -57,7 +55,8 @@ export async function createPost(caption: string, tag: string, file: any) {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      handleUnauthorized(response);
+      throw await response.json();
     }
 
     const data = await response.json();
@@ -90,7 +89,7 @@ export async function getUserPosts(
 
     if (!response.ok) {
       handleUnauthorized(response);
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      throw await response.json();
     }
 
     const data = await response.json();
@@ -105,16 +104,25 @@ export async function authLogin(username: string, password: string) {
   const baseURL = import.meta.env.VITE_BASE_URL;
   const url = `${baseURL}/api/auth/login`;
 
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      username,
-      password,
-    }),
-  });
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
 
-  return await response.json();
+    if (!response.ok) {
+      throw await response.json();
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error auth login:", error);
+    throw error; // Rethrow the error for the calling code to handle
+  }
 }
 
 export async function createUser(
@@ -144,7 +152,7 @@ export async function createUser(
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      throw await response.json();
     }
 
     const data = await response.json();
@@ -186,7 +194,8 @@ export async function updateUser(
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      handleUnauthorized(response);
+      throw await response.json();
     }
 
     const data = await response.json();
@@ -220,10 +229,9 @@ export async function changePasswordUser(
       }),
     });
 
-    console.log(response);
-
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      handleUnauthorized(response);
+      throw await response.json();
     }
 
     const data = await response.json();

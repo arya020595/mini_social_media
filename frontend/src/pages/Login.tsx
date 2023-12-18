@@ -1,12 +1,5 @@
 import { Button, Card, Form as FormBootstrap } from "react-bootstrap";
-import {
-  Form,
-  Link,
-  redirect,
-  useActionData,
-  useLoaderData,
-  useNavigation,
-} from "react-router-dom";
+import { Form, Link, redirect, useNavigation } from "react-router-dom";
 import { authLogin } from "../api";
 
 export function loader({ request }: any) {
@@ -24,28 +17,18 @@ export async function action({ request }: any) {
   const username = await form.get("username");
   const password = await form.get("password");
 
-  try {
-    const response = await authLogin(username, password);
-    localStorage.setItem("accessToken", response.accessToken);
-    localStorage.setItem("user", JSON.stringify(response.user));
+  const response = await authLogin(username, password);
+  localStorage.setItem("accessToken", response.accessToken);
+  localStorage.setItem("user", JSON.stringify(response.user));
 
-    return null;
-  } catch (error: any) {
-    console.error("Login failed:", error.message);
-    return error.message;
-  }
+  return response;
 }
 
 function Login() {
-  const message: any = useLoaderData();
-  const errorMessage: any = useActionData();
   const navigation: any = useNavigation();
 
   return (
     <>
-      {message && <h3>{message}</h3>}
-      {errorMessage && <h3>{errorMessage}</h3>}
-
       <Card border="Secondary">
         <Card.Title className="mt-3 text-dark">LOGIN</Card.Title>
         <Card.Body>

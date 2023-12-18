@@ -14,14 +14,9 @@ import requireAuth from "../utils";
 export async function action({ request }: any) {
   const data = Object.fromEntries(await request.formData());
 
-  try {
-    const response = await createPost(data.caption, data.tag, data.file);
+  const response = await createPost(data.caption, data.tag, data.file);
 
-    return redirect("/post");
-  } catch (error: any) {
-    console.error("Login failed:", error.message);
-    return error.message;
-  }
+  return redirect("/post");
 }
 
 export async function loader({ request }: any) {

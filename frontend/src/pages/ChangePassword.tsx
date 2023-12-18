@@ -12,22 +12,14 @@ import requireAuth from "../utils";
 export async function action({ request }: any) {
   const data = Object.fromEntries(await request.formData());
 
-  if (data.confirm_new_password !== data.new_password)
-    throw new Error(`NOT SAME!`);
+  const response = await changePasswordUser(
+    data.id,
+    data.oldPassword,
+    data.new_password
+  );
+  localStorage.setItem("user", JSON.stringify(response));
 
-  try {
-    const response = await changePasswordUser(
-      data.id,
-      data.oldPassword,
-      data.new_password
-    );
-    localStorage.setItem("user", JSON.stringify(response));
-
-    return null;
-  } catch (error: any) {
-    console.error("Change password failed:", error.message);
-    return error.message;
-  }
+  return response;
 }
 
 export async function loader({ request }: any) {
