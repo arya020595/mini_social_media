@@ -18,6 +18,7 @@ export class CreateUserDto {
   @ApiProperty({ description: 'The username of the user' })
   @IsString()
   @IsNotEmpty()
+  @MinLength(6)
   username: string;
 
   @ApiProperty({ description: 'The password of the user', minLength: 6 })
