@@ -11,9 +11,10 @@ model User {
   id        Int       @default(autoincrement()) @id
   email     String    @unique
   username  String    @unique
-  password  String    @unique
+  password  String    
   name      String
-  image     String?
+  imageUrl  String?
+  imageId   String?   
   posts     Post[]
   likes     Like[]
   createdAt DateTime  @default(now())
@@ -22,9 +23,10 @@ model User {
 
 model Post {
   id        Int       @default(autoincrement()) @id
-  caption   String
+  caption   String    @unique
   tag       String?
-  image     String?
+  imageUrl  String?
+  imageId   String?
   published Boolean?  @default(true)
   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  Int

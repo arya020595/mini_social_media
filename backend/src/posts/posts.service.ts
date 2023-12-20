@@ -26,17 +26,19 @@ export class PostsService {
       // Update the user data with the Cloudinary URL
       postData = {
         ...postData,
-        image: cloudinaryResponse.secure_url,
+        imageUrl: cloudinaryResponse.secure_url,
+        imageId: cloudinaryResponse.public_id,
       };
     }
 
-    const { caption, tag, image, published } = postData;
+    const { caption, tag, imageUrl, imageId, published } = postData;
 
     return this.prisma.post.create({
       data: {
         caption,
         tag,
-        image,
+        imageUrl,
+        imageId,
         published,
         authorId,
       },
@@ -48,6 +50,9 @@ export class PostsService {
       this.prisma.post.findMany({
         skip,
         take,
+        orderBy: {
+          createdAt: 'desc',
+        },
         include: {
           author: true,
           _count: {
@@ -72,6 +77,9 @@ export class PostsService {
       this.prisma.post.findMany({
         skip,
         take,
+        orderBy: {
+          createdAt: 'desc',
+        },
         where: {
           authorId: authorId,
         },

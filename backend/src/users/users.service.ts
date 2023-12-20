@@ -37,7 +37,8 @@ export class UsersService {
       // Update the user data with the Cloudinary URL
       userData = {
         ...userData,
-        image: cloudinaryResponse.secure_url,
+        imageUrl: cloudinaryResponse.secure_url,
+        imageId: cloudinaryResponse.public_id,
       };
     }
 
@@ -67,12 +68,20 @@ export class UsersService {
 
     // Check if a file is provided
     if (file) {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (user.imageUrl) this.cloudinary.deleteFile(user.imageId);
       // Upload the file to Cloudinary
       const cloudinaryResponse = await this.cloudinary.uploadFile(file);
       // Update the user data with the Cloudinary URL
       userData = {
         ...userData,
-        image: cloudinaryResponse.secure_url,
+        imageUrl: cloudinaryResponse.secure_url,
+        imageId: cloudinaryResponse.public_id,
       };
     }
 

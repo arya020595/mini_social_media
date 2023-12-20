@@ -31,8 +31,13 @@ export class CreateUserDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ description: 'The image of the user' })
+  @ApiProperty({ description: 'The image URL of the post' })
   @IsString()
   @IsOptional()
-  image?: string;
+  imageUrl?: string;
+
+  @ApiProperty({ description: 'The image ID of the post' })
+  @IsString()
+  @IsOptional()
+  imageId?: string;
 }

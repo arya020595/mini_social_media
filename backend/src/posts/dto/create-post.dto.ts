@@ -18,7 +18,12 @@ export class CreatePostDto {
   @ApiProperty({ description: 'The image URL of the post' })
   @IsString()
   @IsOptional()
-  image?: string;
+  imageUrl?: string;
+
+  @ApiProperty({ description: 'The image ID of the post' })
+  @IsString()
+  @IsOptional()
+  imageId?: string;
 
   @ApiProperty({
     description: 'The publish status of the post',

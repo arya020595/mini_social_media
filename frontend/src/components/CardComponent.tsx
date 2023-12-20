@@ -7,7 +7,7 @@ function CardComponent({ data }: any) {
   return (
     <Col>
       <Card>
-        <Card.Img variant="top" src={data.image} />
+        <Card.Img variant="top" src={data.imageUrl} />
         <Card.Body>
           <Card.Title>
             {isActive ? (

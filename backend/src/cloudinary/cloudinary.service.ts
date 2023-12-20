@@ -31,8 +31,9 @@ export class CloudinaryService {
 
   async deleteFile(public_id: string): Promise<CloudinaryResponse> {
     return new Promise<CloudinaryResponse>((resolve, reject) => {
-      const deleteStream = cloudinary.uploader.upload_stream(
-        { public_id },
+      const deleteStream = cloudinary.uploader.destroy(
+        public_id,
+        { invalidate: true },
         (error, result) => {
           if (error) return reject(error);
           resolve(result);

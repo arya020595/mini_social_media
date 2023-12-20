@@ -106,8 +106,8 @@ function User() {
                       src={
                         selectedFile
                           ? URL.createObjectURL(selectedFile)
-                          : user.image
-                          ? user.image
+                          : user.imageUrl
+                          ? user.imageUrl
                           : "https://placehold.co/50"
                       }
                     />
