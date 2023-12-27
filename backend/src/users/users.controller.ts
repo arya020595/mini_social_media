@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { User } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -33,6 +34,7 @@ export class UsersController {
     return this.usersService.create(createUserDto, file);
   }
 
+  @Throttle({ short: { ttl: 1000, limit: 1 } })
   @Get()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
