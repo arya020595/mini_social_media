@@ -5,13 +5,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
-import { HttpLoggerMiddleware } from './http-logger.middleware';
 import { LikesModule } from './likes/likes.module';
+import { LoggerModule } from './logger/logger.module';
+import { LoggerService } from './logger/logger.service';
+import { MorganLoggerMiddleware } from './logger/morgan-logger.middleware';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
+    LoggerModule,
     UsersModule,
     PostsModule,
     LikesModule,
@@ -37,6 +40,7 @@ import { UsersModule } from './users/users.module';
   ],
   controllers: [AppController],
   providers: [
+    LoggerService,
     AppService,
     {
       provide: APP_GUARD,
@@ -46,6 +50,6 @@ import { UsersModule } from './users/users.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(HttpLoggerMiddleware).forRoutes('*');
+    consumer.apply(MorganLoggerMiddleware).forRoutes('*');
   }
 }
