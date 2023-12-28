@@ -107,7 +107,7 @@ export class PostsService {
   }
 
   findOne(id: number) {
-    return this.prisma.post.findUnique({
+    return this.prisma.post.findUniqueOrThrow({
       where: {
         id,
       },

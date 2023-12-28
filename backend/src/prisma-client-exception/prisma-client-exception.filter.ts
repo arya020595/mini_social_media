@@ -1,7 +1,7 @@
 import { ArgumentsHost, Catch, HttpStatus } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { Prisma } from '@prisma/client';
-import { Response } from 'express';
+import { Response, request } from 'express';
 
 @Catch(Prisma.PrismaClientKnownRequestError)
 export class PrismaClientExceptionFilter extends BaseExceptionFilter {
@@ -16,6 +16,8 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
     response.status(statusCode).json({
       statusCode,
       message: message,
+      timestamp: new Date().toISOString(),
+      path: request.url,
     });
   }
 }

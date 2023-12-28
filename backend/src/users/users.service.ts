@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotAcceptableException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
@@ -52,7 +48,7 @@ export class UsersService {
   }
 
   findOne(id: number): Promise<User> {
-    return this.prisma.user.findUnique({
+    return this.prisma.user.findUniqueOrThrow({
       where: {
         id,
       },
@@ -68,7 +64,7 @@ export class UsersService {
 
     // Check if a file is provided
     if (file) {
-      const user = await this.prisma.user.findUnique({
+      const user = await this.prisma.user.findUniqueOrThrow({
         where: {
           id,
         },
@@ -96,15 +92,11 @@ export class UsersService {
     id: number,
     updateUserDto: UpdateUserDto,
   ): Promise<User> {
-    const user = await this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUniqueOrThrow({
       where: {
         id,
       },
     });
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
 
     // Verify the old password
     const isOldPasswordValid = await bcrypt.compare(
