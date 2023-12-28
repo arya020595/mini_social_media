@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import * as fs from 'fs-extra';
+import * as path from 'path';
 import * as winston from 'winston';
 
 @Injectable()
@@ -6,19 +8,33 @@ export class LoggerService {
   private logger: winston.Logger;
 
   constructor() {
+    const logsDirectory = path.join(__dirname, 'logs');
+    fs.ensureDirSync(logsDirectory);
+
+    const exceptionLogPath = path.join(logsDirectory, 'exception.log');
+    const rejectionLogPath = path.join(logsDirectory, 'rejection.log');
+
     this.logger = winston.createLogger({
       level: 'http',
       format: winston.format.combine(
-        winston.format.timestamp({ format: 'YYYY-MM-DD hh:mm:ss.SSS A' }),
+        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS A' }),
         winston.format.json(),
-        winston.format.colorize({ all: true }),
       ),
-      transports: [new winston.transports.Console()],
+      transports: [
+        new winston.transports.Console({
+          format: winston.format.colorize({ all: true }),
+        }),
+        new winston.transports.File({
+          level: 'error',
+          filename: exceptionLogPath,
+          handleExceptions: true,
+        }),
+      ],
       exceptionHandlers: [
-        new winston.transports.File({ filename: 'exception.log' }),
+        new winston.transports.File({ filename: exceptionLogPath }),
       ],
       rejectionHandlers: [
-        new winston.transports.File({ filename: 'rejections.log' }),
+        new winston.transports.File({ filename: rejectionLogPath }),
       ],
     });
   }
