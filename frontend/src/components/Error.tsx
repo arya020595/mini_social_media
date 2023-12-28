@@ -8,8 +8,6 @@ function Error() {
   let { message, error, statusCode } = errorResponse;
   if (!Array.isArray(message)) message = [message];
 
-  console.log(message);
-
   const navigate = useNavigate();
   const handleRefresh = () => {
     navigate(currentPathname);

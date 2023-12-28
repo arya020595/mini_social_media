@@ -25,7 +25,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     } else if (exception.status) {
       // Handle HTTP-related errors
       status = exception.status;
-      message = exception.message || 'Unknown Error';
+      message = exception.response.message || 'Unknown Error';
     }
 
     this.logger.error({
