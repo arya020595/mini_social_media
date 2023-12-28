@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as winston from 'winston';
+import * as DailyRotateFile from 'winston-daily-rotate-file';
 
 @Injectable()
 export class LoggerService {
@@ -28,6 +29,13 @@ export class LoggerService {
           level: 'error',
           filename: exceptionLogPath,
           handleExceptions: true,
+        }),
+        new DailyRotateFile({
+          filename: exceptionLogPath,
+          datePattern: 'YYYY-MM-DD',
+          zippedArchive: true,
+          maxSize: '20m',
+          maxFiles: '14d',
         }),
       ],
       exceptionHandlers: [
