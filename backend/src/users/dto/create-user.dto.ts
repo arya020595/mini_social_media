@@ -6,6 +6,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  Matches,
   MinLength,
 } from 'class-validator';
 
@@ -19,6 +20,9 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(6)
+  @Matches(/^[a-zA-Z0-9_]+$/, {
+    message: 'Username must contain only letters, numbers, and underscores',
+  })
   username: string;
 
   @ApiProperty({ description: 'The password of the user', minLength: 6 })

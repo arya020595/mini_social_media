@@ -25,7 +25,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
     } else if (exception.status) {
       // Handle HTTP-related errors
       status = exception.status;
-      message = exception.response.message || 'Unknown Error';
+      message =
+        exception.response.message || exception.message || 'Unknown Error';
     }
 
     this.logger.error({
@@ -38,11 +39,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
     });
 
     response.status(status).json({
-      timestamp: new Date().toISOString(),
-      path: request.url,
-      method: request.method,
+      success: false,
       message,
       status,
+      path: request.url,
+      method: request.method,
+      timestamp: new Date().toISOString(),
     });
   }
 }
