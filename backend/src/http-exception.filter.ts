@@ -3,11 +3,13 @@ import {
   Catch,
   ExceptionFilter,
   HttpStatus,
+  LoggerService,
 } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
+  constructor(private readonly logger: LoggerService) {}
   catch(exception: any, host: ArgumentsHost) {
     const context = host.switchToHttp();
     const response = context.getResponse();
@@ -25,6 +27,15 @@ export class HttpExceptionFilter implements ExceptionFilter {
       status = exception.status;
       message = exception.message || 'Unknown Error';
     }
+
+    this.logger.error({
+      timestamp: new Date().toISOString(),
+      path: request.url,
+      method: request.method,
+      status,
+      message,
+      exception: exception.stack,
+    });
 
     response.status(status).json({
       timestamp: new Date().toISOString(),

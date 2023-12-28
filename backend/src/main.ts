@@ -1,16 +1,17 @@
 import { ValidationPipe } from '@nestjs/common';
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './http-exception.filter';
+import { LoggerService } from './logger/logger.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const { httpAdapter } = app.get(HttpAdapterHost);
   app.enableCors();
   app.setGlobalPrefix('api');
+  const logger = app.get(LoggerService);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter(logger));
   const config = new DocumentBuilder()
     .setTitle('API Lviors')
     .setDescription('The lvior API')
@@ -37,7 +38,7 @@ async function bootstrap() {
         };
       }
     })
-    .filter((item) => item !== undefined);
+    .filter((item: any) => item !== undefined);
   console.log(availableRoutes);
 }
 bootstrap();

@@ -7,11 +7,11 @@ export class LoggerService {
 
   constructor() {
     this.logger = winston.createLogger({
-      handleExceptions: true,
       level: 'http',
       format: winston.format.combine(
         winston.format.timestamp({ format: 'YYYY-MM-DD hh:mm:ss.SSS A' }),
         winston.format.json(),
+        winston.format.colorize({ all: true }),
       ),
       transports: [new winston.transports.Console()],
       exceptionHandlers: [
@@ -29,5 +29,9 @@ export class LoggerService {
 
   error(message: string, trace: string) {
     this.logger.error(message, trace);
+  }
+
+  warn(message: string, trace: string) {
+    this.logger.warn(message, trace);
   }
 }
