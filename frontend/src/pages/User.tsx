@@ -21,7 +21,7 @@ export async function action({ request }: any) {
     data.email,
     data.file
   );
-  localStorage.setItem("user", JSON.stringify(response));
+  localStorage.setItem("user", JSON.stringify(response.data));
 
   return response;
 }
