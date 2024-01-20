@@ -17,7 +17,7 @@ export async function action({ request }: any) {
     data.oldPassword,
     data.new_password
   );
-  localStorage.setItem("user", JSON.stringify(response));
+  localStorage.setItem("user", JSON.stringify(response.data));
 
   return response;
 }
