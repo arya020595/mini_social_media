@@ -11,7 +11,7 @@ function CardComponent({ data, onLikeUpdate, userId }: any) {
     setIsActive(isLikedByAuthor);
   }, [data]);
 
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(isLikedByAuthor);
 
   const updateLikes = () => {
     setIsActive((prevIsActive: any) => !prevIsActive);
