@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, Col } from "react-bootstrap";
 
 function CardComponent({ data, onLikeUpdate, userId }: any) {
@@ -7,7 +7,11 @@ function CardComponent({ data, onLikeUpdate, userId }: any) {
     (like: any) => like.authorId === userId
   );
 
-  const [isActive, setIsActive] = useState(isLikedByAuthor);
+  useEffect(() => {
+    setIsActive(isLikedByAuthor);
+  }, [data]);
+
+  const [isActive, setIsActive] = useState(true);
 
   const updateLikes = () => {
     setIsActive((prevIsActive: any) => !prevIsActive);
