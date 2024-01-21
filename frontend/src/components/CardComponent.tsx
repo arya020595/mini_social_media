@@ -1,8 +1,21 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import { Card, Col } from "react-bootstrap";
 
-function CardComponent({ data }: any) {
-  const isActive = false;
+function CardComponent({ data, onLikeUpdate, userId }: any) {
+  let isLikedByAuthor = data.likes.some(
+    (like: any) => like.authorId === userId
+  );
+
+  const [isActive, setIsActive] = useState(isLikedByAuthor);
+
+  const updateLikes = () => {
+    setIsActive((prevIsActive: any) => !prevIsActive);
+
+    data._count.likes += isActive ? -1 : 1;
+
+    onLikeUpdate(data.id, isActive);
+  };
 
   return (
     <Col>
@@ -12,11 +25,12 @@ function CardComponent({ data }: any) {
           <Card.Title>
             {isActive ? (
               <FontAwesomeIcon
+                onClick={updateLikes}
                 className="text-danger"
                 icon={["fas", "heart"]}
               />
             ) : (
-              <FontAwesomeIcon icon={["far", "heart"]} />
+              <FontAwesomeIcon onClick={updateLikes} icon={["far", "heart"]} />
             )}
             <span className="ms-2">{data._count.likes}</span>
           </Card.Title>

@@ -3,36 +3,39 @@ import { useState } from "react";
 import { Button, Row } from "react-bootstrap";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
-import { getUserPosts } from "../api";
+import { CreateLike, DeleteLike, getUserPosts } from "../api";
 import CardComponent from "../components/CardComponent";
 import PaginationComponent from "../components/PaginationComponent";
 import requireAuth from "../utils";
 
 export async function loader({ request }: any) {
   await requireAuth(request);
-  const accessToken = localStorage.getItem("accessToken");
   const skip = 0;
   const take = 10;
-  return getUserPosts(accessToken, skip, take);
+  return getUserPosts(skip, take);
 }
 
 function Post() {
   const dataInit: any = useLoaderData();
   const [currentPage, setCurrentPage] = useState(1);
   const [datas, setDatas] = useState<any>(dataInit);
-
+  const user: any = localStorage.getItem("user");
+  const userId = JSON.parse(user).id;
   const totalPages = datas?.totalPages || 0;
 
   const handlePageChange = async (pageNumber: number) => {
     setCurrentPage(pageNumber);
     // Fetch data for the selected page
-    const accessToken = localStorage.getItem("accessToken");
     const skip = (pageNumber - 1) * 10; // Adjust this based on API pagination logic
     const take = 10;
-    const newData = await getUserPosts(accessToken, skip, take);
+    const newData = await getUserPosts(skip, take);
 
     // Update the state with the new data
     setDatas(newData);
+  };
+
+  const handleLikeUpdate = (postId: number, isLiked: boolean) => {
+    isLiked ? DeleteLike(postId, userId) : CreateLike(postId, userId);
   };
 
   return (
@@ -48,7 +51,12 @@ function Post() {
 
       <Row xs={1} md={2} lg={4} className="g-3">
         {datas?.data.map((item: any, index: number) => (
-          <CardComponent key={index} data={item} />
+          <CardComponent
+            key={index}
+            data={item}
+            onLikeUpdate={handleLikeUpdate}
+            userId={userId}
+          />
         ))}
       </Row>
 

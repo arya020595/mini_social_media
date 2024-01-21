@@ -55,6 +55,7 @@ export class PostsService {
         },
         include: {
           author: true,
+          likes: true,
           _count: {
             select: { likes: true },
           },
@@ -85,6 +86,7 @@ export class PostsService {
         },
         include: {
           author: true,
+          likes: true,
           _count: {
             select: { likes: true },
           },
