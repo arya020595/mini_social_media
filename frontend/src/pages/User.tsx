@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -7,8 +7,14 @@ import {
   Form as FormBootstrap,
   Row,
 } from "react-bootstrap";
-import { Form, useLoaderData, useNavigation } from "react-router-dom";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "react-router-dom";
 import { updateUser } from "../api";
+import ToastComponent from "../components/ToastComponent";
 import requireAuth from "../utils";
 
 export async function action({ request }: any) {
@@ -44,6 +50,14 @@ function User() {
   const [selectedFile, setSelectedFile] = useState(null);
   const navigation: any = useNavigation();
   const user: any = useLoaderData();
+  const [showToast, setShowToast] = useState(false);
+  const errorMessage: any = useActionData();
+
+  useEffect(() => {
+    if (errorMessage) {
+      setShowToast(true);
+    }
+  }, [errorMessage]);
 
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
@@ -57,6 +71,13 @@ function User() {
   return (
     <div className="text-center">
       <h4>Detail User</h4>
+
+      <ToastComponent
+        errorMessage={errorMessage}
+        show={showToast}
+        setShow={setShowToast}
+      />
+
       <Container>
         <Row xs={1} md={2} lg={3} className="justify-content-center">
           <Col>
@@ -99,9 +120,9 @@ function User() {
                     type="file"
                     onChange={handleFileChange}
                   />
-                  <Card className="mt-3">
+                  <Card className="mt-3" style={{ maxWidth: "200px" }}>
                     <Card.Img
-                      style={{ width: "100%" }}
+                      className="img-fluid"
                       variant="top"
                       src={
                         selectedFile

@@ -65,14 +65,14 @@ function PostForm() {
                     type="file"
                     onChange={handleFileChange}
                   />
-                  <Card className="mt-3">
+                  <Card className="mt-3" style={{ maxWidth: "200px" }}>
                     <Card.Img
-                      style={{ width: "100%" }}
+                      className="img-fluid"
                       variant="top"
                       src={
                         selectedFile
                           ? URL.createObjectURL(selectedFile)
-                          : "https://placehold.co/50"
+                          : "https://placehold.co/200"
                       }
                     />
                   </Card>

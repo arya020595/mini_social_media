@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -5,8 +6,14 @@ import {
   Form as FormBootstrap,
   Row,
 } from "react-bootstrap";
-import { Form, useLoaderData, useNavigation } from "react-router-dom";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "react-router-dom";
 import { changePasswordUser } from "../api";
+import ToastComponent from "../components/ToastComponent";
 import requireAuth from "../utils";
 
 export async function action({ request }: any) {
@@ -40,10 +47,24 @@ export async function loader({ request }: any) {
 function ChangePassword() {
   const navigation: any = useNavigation();
   const user: any = useLoaderData();
+  const [showToast, setShowToast] = useState(false);
+  const errorMessage: any = useActionData();
+
+  useEffect(() => {
+    if (errorMessage) {
+      setShowToast(true);
+    }
+  }, [errorMessage]);
 
   return (
     <div className="text-center">
       <h4>Change Password</h4>
+
+      <ToastComponent
+        errorMessage={errorMessage}
+        show={showToast}
+        setShow={setShowToast}
+      />
 
       <Container>
         <Row xs={1} md={2} lg={3} className="justify-content-center">
