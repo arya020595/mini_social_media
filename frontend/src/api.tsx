@@ -1,10 +1,10 @@
 import { redirect } from "react-router";
 
-export async function getPosts(skip: number, take: number) {
+export async function getPosts(skip: number, take: number, searchTerm: string) {
   try {
     const baseURL = import.meta.env.VITE_BASE_URL;
     const accessToken: string | null = localStorage.getItem("accessToken");
-    const url = `${baseURL}/api/posts?skip=${skip}&take=${take}`;
+    const url = `${baseURL}/api/posts?skip=${skip}&take=${take}&searchTerm=${searchTerm}`;
 
     const headers = {
       "Content-Type": "application/json",
@@ -65,11 +65,15 @@ export async function createPost(caption: string, tag: string, file: any) {
   }
 }
 
-export async function getUserPosts(skip: number, take: number) {
+export async function getUserPosts(
+  skip: number,
+  take: number,
+  searchTerm: string
+) {
   try {
     const baseURL = import.meta.env.VITE_BASE_URL;
     const accessToken: string | null = localStorage.getItem("accessToken");
-    const url = `${baseURL}/api/posts/user?skip=${skip}&take=${take}`;
+    const url = `${baseURL}/api/posts/user?skip=${skip}&take=${take}&searchTerm=${searchTerm}`;
 
     const headers = {
       "Content-Type": "application/json",

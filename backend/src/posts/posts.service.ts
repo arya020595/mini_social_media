@@ -45,7 +45,27 @@ export class PostsService {
     });
   }
 
-  async findAll({ skip = 0, take = 10 }) {
+  async findAll({ skip = 0, take = 10, searchTerm = '' }) {
+    let whereClause = {};
+
+    // If a search term is provided, construct the whereClause to search in "caption" or "tags".
+    if (searchTerm !== '') {
+      whereClause = {
+        OR: [
+          {
+            caption: {
+              contains: searchTerm,
+            },
+          },
+          {
+            tag: {
+              contains: searchTerm,
+            },
+          },
+        ],
+      };
+    }
+
     const [posts, total] = await Promise.all([
       this.prisma.post.findMany({
         skip,
@@ -53,6 +73,7 @@ export class PostsService {
         orderBy: {
           createdAt: 'desc',
         },
+        where: whereClause,
         include: {
           author: true,
           likes: true,
@@ -61,7 +82,9 @@ export class PostsService {
           },
         },
       }),
-      this.prisma.post.count(), // Fetch total count of posts
+      this.prisma.post.count({
+        where: whereClause,
+      }),
     ]);
 
     const totalPages = Math.ceil(total / take);
@@ -73,7 +96,35 @@ export class PostsService {
     };
   }
 
-  async findAllUser({ authorId, skip = 0, take = 10 }) {
+  async findAllUser({ authorId, skip = 0, take = 10, searchTerm = '' }) {
+    interface WhereClause {
+      OR?: Array<
+        { caption: { contains: string } } | { tag: { contains: string } }
+      >;
+      authorId?: number;
+    }
+
+    let whereClause: WhereClause = {};
+    // If a search term is provided, construct the whereClause to search in "caption" or "tags".
+    whereClause = {
+      OR: [
+        {
+          caption: {
+            contains: searchTerm,
+          },
+        },
+        {
+          tag: {
+            contains: searchTerm,
+          },
+        },
+      ],
+    };
+
+    if (authorId) {
+      whereClause.authorId = authorId;
+    }
+
     const [posts, total] = await Promise.all([
       this.prisma.post.findMany({
         skip,
@@ -81,9 +132,7 @@ export class PostsService {
         orderBy: {
           createdAt: 'desc',
         },
-        where: {
-          authorId: authorId,
-        },
+        where: whereClause,
         include: {
           author: true,
           likes: true,
@@ -93,9 +142,7 @@ export class PostsService {
         },
       }),
       this.prisma.post.count({
-        where: {
-          authorId: authorId,
-        },
+        where: whereClause,
       }), // Fetch total count of posts for the specified author
     ]);
 

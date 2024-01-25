@@ -5,13 +5,15 @@ import { useState } from "react";
 import { useLoaderData } from "react-router";
 import { CreateLike, DeleteLike, getPosts } from "../api";
 import PaginationComponent from "../components/PaginationComponent";
+import SearchBar from "../components/SearchBar";
 import requireAuth from "../utils";
 
 export async function loader({ request }: any) {
   await requireAuth(request);
   const skip = 0;
   const take = 10;
-  return getPosts(skip, take);
+  const searchTerm = "";
+  return getPosts(skip, take, searchTerm);
 }
 
 function Home() {
@@ -21,13 +23,24 @@ function Home() {
   const user: any = localStorage.getItem("user");
   const userId = JSON.parse(user).id;
   const totalPages = datas?.totalPages || 0;
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handlePageChange = async (pageNumber: number) => {
     setCurrentPage(pageNumber);
     // Fetch data for the selected page
     const skip = (pageNumber - 1) * 10; // Adjust this based on API pagination logic
     const take = 10;
-    const newData = await getPosts(skip, take);
+    const newData = await getPosts(skip, take, searchTerm);
+
+    // Update the state with the new data
+    setDatas(newData);
+  };
+
+  const handleSearch = async () => {
+    // Fetch data based on the search term
+    const skip = 0; // Reset skip to fetch from the first page
+    const take = 10;
+    const newData = await getPosts(skip, take, searchTerm);
 
     // Update the state with the new data
     setDatas(newData);
@@ -39,6 +52,12 @@ function Home() {
 
   return (
     <>
+      <SearchBar
+        searchTerm={searchTerm}
+        onSearch={setSearchTerm}
+        handleSearch={handleSearch}
+      />
+
       <Row xs={1} md={2} lg={4} className="g-3">
         {datas?.data.map((item: any, index: number) => (
           <CardComponent

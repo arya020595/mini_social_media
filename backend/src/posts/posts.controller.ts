@@ -45,8 +45,9 @@ export class PostsController {
   findAll(
     @Query('skip', ParseIntPipe) skip: number = 0,
     @Query('take', ParseIntPipe) take: number = 10,
+    @Query('searchTerm') searchTerm: string,
   ) {
-    return this.postsService.findAll({ skip, take });
+    return this.postsService.findAll({ skip, take, searchTerm });
   }
 
   @UseGuards(JwtAuthGuard)
@@ -56,9 +57,10 @@ export class PostsController {
     @Request() req,
     @Query('skip', ParseIntPipe) skip: number = 0,
     @Query('take', ParseIntPipe) take: number = 10,
+    @Query('searchTerm') searchTerm: string,
   ) {
     const authorId = req.user.id;
-    return this.postsService.findAllUser({ authorId, skip, take });
+    return this.postsService.findAllUser({ authorId, skip, take, searchTerm });
   }
 
   @UseGuards(JwtAuthGuard)

@@ -39,7 +39,7 @@ function CardComponent({ data, onLikeUpdate, userId }: any) {
             <span className="ms-2">{data._count.likes}</span>
           </Card.Title>
           <Card.Title>{data.caption}</Card.Title>
-          <Card.Link className="text-decoration-none text-secondary" href="#">
+          <Card.Link className="text-decoration-none text-secondary">
             {data.tag}
           </Card.Link>
         </Card.Body>
