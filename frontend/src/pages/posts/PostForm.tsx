@@ -9,18 +9,13 @@ import {
 } from "react-bootstrap";
 import { Form, redirect, useNavigation } from "react-router-dom";
 import { createPost } from "../../api";
-import requireAuth from "../../utils";
 
 export async function action({ request }: any) {
   const data = Object.fromEntries(await request.formData());
 
-  const response = await createPost(data.caption, data.tag, data.file);
+  await createPost(data.caption, data.tag, data.file);
 
   return redirect("/post");
-}
-
-export async function loader({ request }: any) {
-  await requireAuth(request);
 }
 
 function PostForm() {

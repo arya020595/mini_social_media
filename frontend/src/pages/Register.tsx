@@ -18,7 +18,7 @@ export async function action({ request }: any) {
   return response;
 }
 
-export async function loader({ request }: any) {
+export async function loader() {
   return null;
 }
 

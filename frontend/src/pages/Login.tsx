@@ -2,7 +2,7 @@ import { Button, Card, Form as FormBootstrap } from "react-bootstrap";
 import { Form, Link, redirect, useNavigation } from "react-router-dom";
 import { authLogin } from "../api";
 
-export function loader({ request }: any) {
+export function loader() {
   const accessToken = localStorage.getItem("accessToken");
 
   if (accessToken == null || accessToken === "undefined") {
