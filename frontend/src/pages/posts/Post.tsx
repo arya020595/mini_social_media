@@ -9,8 +9,8 @@ import PaginationComponent from "../../components/PaginationComponent";
 import SearchBar from "../../components/SearchBar";
 import requireAuth from "../../utils";
 
-export async function loader({ request }: any) {
-  await requireAuth(request);
+export async function loader() {
+  await requireAuth();
   const skip = 0;
   const take = 10;
   const searchTerm = "";

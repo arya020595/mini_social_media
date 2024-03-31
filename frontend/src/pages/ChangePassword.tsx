@@ -29,8 +29,8 @@ export async function action({ request }: any) {
   return response;
 }
 
-export async function loader({ request }: any) {
-  await requireAuth(request);
+export async function loader() {
+  await requireAuth();
 
   const user: string | null = localStorage.getItem("user");
 
