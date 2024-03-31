@@ -3,11 +3,11 @@ import { useState } from "react";
 import { Button, Row } from "react-bootstrap";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
-import { CreateLike, DeleteLike, getUserPosts } from "../api";
-import CardComponent from "../components/CardComponent";
-import PaginationComponent from "../components/PaginationComponent";
-import SearchBar from "../components/SearchBar";
-import requireAuth from "../utils";
+import { CreateLike, DeleteLike, getUserPosts } from "../../api";
+import CardComponent from "../../components/CardComponent";
+import PaginationComponent from "../../components/PaginationComponent";
+import SearchBar from "../../components/SearchBar";
+import requireAuth from "../../utils";
 
 export async function loader({ request }: any) {
   await requireAuth(request);

@@ -14,13 +14,13 @@ import Login, {
   action as loginAction,
   loader as loginLoader,
 } from "./pages/Login";
-import Post, { loader as postsloader } from "./pages/Post";
-import PostForm, { action as postsAction } from "./pages/PostForm";
 import Register, {
   action as registerAction,
   loader as registerLoader,
 } from "./pages/Register";
 import User, { action as userAction, loader as userloader } from "./pages/User";
+import Post, { loader as postsloader } from "./pages/posts/Post";
+import PostForm, { action as postsAction } from "./pages/posts/PostForm";
 
 function App() {
   const router = createBrowserRouter(
