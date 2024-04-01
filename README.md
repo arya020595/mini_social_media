@@ -1,3 +1,7 @@
+**LIVE PREVIEW**
+
+https://mini-social-media-eta.vercel.app/
+
 **HOW TO RUN BACKEND**
 1. cd backend
 2. pnpm install
